@@ -16,6 +16,9 @@ interface ApiService {
     @POST("/api/v1/access_token")
     suspend fun getAccessToken(
         @Header("Authorization") authorization: String,
+        @Header("User-Agent") userAgent: String,
+        @Header("Content-Length") contentLength: Long,
+        @Header("Host") host: String,
         @Field("grant_type") grantType: String,
         @Field("username") username: String,
         @Field("password") password: String
