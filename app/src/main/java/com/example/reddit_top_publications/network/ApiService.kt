@@ -8,10 +8,15 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ApiService {
     @GET("r/popular/top/")
-    suspend fun getTopPublications(): Listing
+    suspend fun getTopPublications(
+        @Query("limit") limit: Int,
+        @Query("after") after: String? = null
+    ): Listing
+
     @FormUrlEncoded
     @POST("/api/v1/access_token")
     suspend fun getAccessToken(

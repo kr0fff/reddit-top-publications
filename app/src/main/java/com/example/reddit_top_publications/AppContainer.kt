@@ -1,10 +1,8 @@
 package com.example.reddit_top_publications
 
 import android.app.Application
-import com.example.reddit_top_publications.data.TokenInterceptor
-import com.google.gson.GsonBuilder
+import com.example.reddit_top_publications.network.TokenInterceptor
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
