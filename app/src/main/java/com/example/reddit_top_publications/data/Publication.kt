@@ -17,11 +17,14 @@ data class ListingData(
 @Serializable
 data class Child(
     val kind: String? = null,
-    val data: PublicationData = PublicationData( "", "")
+    val data: PublicationData = PublicationData("", "", null, 0.0, 0)
 )
 
 @Serializable
 data class PublicationData(
     val subreddit: String,
-    val author: String
+    val author: String,
+    val thumbnail: String? = null,
+    val created: Double,
+    val num_comments: Int
 )
