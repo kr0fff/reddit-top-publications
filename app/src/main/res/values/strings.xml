@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">reddit-top-publications</string>
+    <string name="reddit_media_url">thumbs.redditmedia.com</string>
 </resources>

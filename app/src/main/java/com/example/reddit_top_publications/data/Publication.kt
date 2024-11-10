@@ -24,8 +24,8 @@ data class Child(
 data class PublicationData(
     val subreddit: String,
     val author: String,
-    val thumbnail: String? = null,
+    var thumbnail: String? = null,
     val created: Double,
     val num_comments: Int,
-    val url_overridden_by_dest: String? = null
+    var url_overridden_by_dest: String? = null
 )
