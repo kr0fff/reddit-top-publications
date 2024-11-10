@@ -26,5 +26,6 @@ data class PublicationData(
     val author: String,
     val thumbnail: String? = null,
     val created: Double,
-    val num_comments: Int
+    val num_comments: Int,
+    val url_overridden_by_dest: String? = null
 )

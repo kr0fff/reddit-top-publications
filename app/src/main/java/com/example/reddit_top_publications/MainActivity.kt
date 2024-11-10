@@ -111,7 +111,7 @@ fun PublicationCard(item: PublicationData, context: Context) {
                     .padding(end = 8.dp)
                     .size(80.dp)
                     .clickable {
-                        item.thumbnail?.let { url ->
+                        item.url_overridden_by_dest?.let { url ->
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                             context.startActivity(intent)
                         }
@@ -119,8 +119,7 @@ fun PublicationCard(item: PublicationData, context: Context) {
             )
             Column(
                 modifier = Modifier
-                    .height(80.dp)
-                    ,
+                    .height(80.dp),
                 verticalArrangement = Arrangement.SpaceAround
             ) {
                 Label("Author", item.author)
