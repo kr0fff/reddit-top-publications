@@ -18,6 +18,8 @@ loggingInterceptor = "4.9.1"
 pagingRuntime = "3.1.1"
 pagingCompose = "3.2.0"
 coilCompose = "2.7.0"
+dagger = "2.52"
+daggerCompiler = "2.52"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +44,8 @@ logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-intercep
 androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "pagingRuntime" }
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingCompose" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
+dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
+dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "daggerCompiler" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -45,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.LazyPagingItems
@@ -57,26 +58,29 @@ import com.example.reddit_top_publications.network.ApiService
 import com.example.reddit_top_publications.ui.theme.ReddittoppublicationsTheme
 import com.example.reddit_top_publications.utils.downloadImage
 import com.example.reddit_top_publications.utils.toRelativeTime
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var viewModelFactory: MainActivityViewModelFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as AppContainer).appComponent.inject(this)
         super.onCreate(savedInstanceState)
 
-        enableEdgeToEdge()
+        val viewModel =
+            ViewModelProvider(this, viewModelFactory)[MainActivityViewModel::class.java]
+
         setContent {
             ReddittoppublicationsTheme {
-                RenderApp(AppContainer())
+                RenderApp(viewModel)
             }
         }
     }
 }
 
 @Composable
-fun RenderApp(appContainer: AppContainer) {
-    val apiService = appContainer.createService(ApiService::class.java)
-    val repository = Repository(apiService)
-    val viewModel: MainActivityViewModel =
-        viewModel(factory = MainActivityViewModelFactory(repository))
+fun RenderApp(viewModel: MainActivityViewModel) {
     val context = LocalContext.current
     val topPublications = viewModel.topPublications.collectAsLazyPagingItems()
     Scaffold { innerPadding ->
@@ -89,7 +93,6 @@ fun RenderApp(appContainer: AppContainer) {
             }
         }
     }
-
 }
 
 @Composable
@@ -137,14 +140,16 @@ fun PublicationCard(item: PublicationData, context: Context) {
                 Label("Author", item.author)
                 Label("Comments", item.num_comments.toString())
                 Label("Created", item.created.toRelativeTime())
-                Button(onClick = {
-                    item.url_overridden_by_dest?.let { url ->
-                        Log.d("URL_ICON", item.url_overridden_by_dest.toString())
-                        downloadImage(context, url, "downloaded_image.jpg")
-                    }
-                },
+                Button(
+                    onClick = {
+                        item.url_overridden_by_dest?.let { url ->
+                            Log.d("URL_ICON", item.url_overridden_by_dest.toString())
+                            downloadImage(context, url, "downloaded_image.jpg")
+                        }
+                    },
                     modifier = Modifier
-                        .fillMaxWidth()){
+                        .fillMaxWidth()
+                ) {
                     Text("Download Image")
                 }
             }

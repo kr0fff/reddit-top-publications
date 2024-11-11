@@ -1,31 +1,20 @@
 package com.example.reddit_top_publications
 
 import android.app.Application
-import com.example.reddit_top_publications.network.TokenInterceptor
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.reddit_top_publications.data.di.AppComponent
+import com.example.reddit_top_publications.data.di.DaggerAppComponent
+import com.example.reddit_top_publications.network.ApiService
+import javax.inject.Inject
 
 class AppContainer : Application() {
-    companion object {
-        private val retrofitBuilder: Retrofit.Builder =
-            Retrofit.Builder()
-                .baseUrl("https://oauth.reddit.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-    }
+    lateinit var appComponent: AppComponent
 
-    private var retrofit: Retrofit = retrofitBuilder.build()
+    @Inject
+    lateinit var apiService: ApiService
 
-    private val httpClient: OkHttpClient.Builder = OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        })
-        .addInterceptor(TokenInterceptor())
-
-
-    fun <T> createService(serviceClass: Class<T>): T {
-        retrofit = retrofitBuilder.client(httpClient.build()).build()
-        return retrofit.create(serviceClass)
+    override fun onCreate() {
+        super.onCreate()
+        appComponent = DaggerAppComponent.builder().build()
+        appComponent.inject(this)
     }
 }
