@@ -27,6 +27,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -47,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.LazyPagingItems
 import coil.compose.rememberAsyncImagePainter
@@ -83,13 +85,23 @@ class MainActivity : ComponentActivity() {
 fun RenderApp(viewModel: MainActivityViewModel) {
     val context = LocalContext.current
     val topPublications = viewModel.topPublications.collectAsLazyPagingItems()
+    val loadState = topPublications.loadState
+
     Scaffold { innerPadding ->
-        LazyColumn(contentPadding = innerPadding) {
-            items(topPublications.itemCount) { index ->
-                val publication = topPublications[index]
-                publication?.let {
-                    PublicationCard(publication.data, context)
+        Box(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(contentPadding = innerPadding) {
+                items(topPublications.itemCount) { index ->
+                    val publication = topPublications[index]
+                    publication?.let {
+                        PublicationCard(publication.data, context)
+                    }
                 }
+            }
+
+            if (loadState.refresh is LoadState.Loading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
             }
         }
     }
